@@ -1,22 +1,82 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { dummyProducts } from "../assets/assets";
 
 export const AppContext = createContext();
 
-export const AppContextProvider = ({children}) => {
-    const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    const [isSeller, setIsSeller] = useState(false);
-    const [showUserLogin, setShowUserLogin] = useState(false);
+export const AppContextProvider = ({ children }) => {
+  const currency = import.meta.VITE_CURRENCY;
 
-    const value = {navigate , user, setUser, isSeller, setIsSeller,
-        showUserLogin, setShowUserLogin
+  const navigate = useNavigate();
+  //Navbar
+  const [user, setUser] = useState(null);
+  const [isSeller, setIsSeller] = useState(false);
+  const [showUserLogin, setShowUserLogin] = useState(false);
+  //ProductCard
+  const [products, setProducts] = useState([]);
+  const [cartItems, setCartItems] = useState({});
+
+  //Set products
+  const fetchProducts = async () => {
+    setProducts(dummyProducts);
+  };
+
+  //Add product to cart
+  const addToCart = (itemId) => {
+    let cartData = structuredClone(cartItems);
+    if (cartData[itemId]) {
+      cartData[itemId] += 1;
+    } else {
+      cartData[itemId] = 1;
     }
-    return <AppContext.Provider value={value}>
-         {children}
-    </AppContext.Provider>
-}
+    setCartItems(cartData);
+    toast.success("Added to cart");
+  };
 
-export const useAppContext = ()=>{
-    return useContext(AppContext)
-}
+  //Update cart item quantity
+  const updateCartItems = (itemId, quantity) => {
+    let cartData = structuredClone(cartItems);
+    cartData[itemId] = quantity;
+    setCartItems(cartData);
+    toast.success("Cart updated");
+  };
+
+  //Remove item from cart
+  const removeFromCart = (itemId) => {
+    let cartData = structuredClone(cartItems);
+    if (cartData[itemId]) {
+      cartData[itemId] -= 1;
+      if (cartData[itemId] === 0) {
+        delete cartData[itemId];
+      }
+    }
+    toast.success("Items removed from cart");
+    setCartItems(cartData);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const value = {
+    navigate,
+    user,
+    setUser,
+    isSeller,
+    setIsSeller,
+    showUserLogin,
+    setShowUserLogin,
+    currency,
+    products,
+    cartItems,
+    addToCart,
+    updateCartItems,
+    removeFromCart,
+  };
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+};
+
+export const useAppContext = () => {
+  return useContext(AppContext);
+};
