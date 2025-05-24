@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, NavLink } from "react-router-dom";
 import { useAppContext} from "../context/AppContext";
+import { assets } from "../assets/assets";
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
@@ -16,7 +17,7 @@ const Navbar = () => {
         <NavLink to='/' onClick={()=> setOpen(false)}>
           <img
             className="h-9"
-            src="https://www.svgrepo.com/show/403768/letter-g.svg"
+            src={assets.logo}
             alt="logo"
           />
         </NavLink>
