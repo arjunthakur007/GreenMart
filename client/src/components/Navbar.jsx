@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, NavLink } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
-  const { user, setUser, setShowUserLogin, navigate } = useAppContext();
+  const {
+    user,
+    setUser,
+    setShowUserLogin,
+    navigate,
+    searchQuery,
+    setSearchQuery,
+  } = useAppContext();
+
   const logout = async () => {
     setUser(null);
     Navigate("/");
   };
+
+  useEffect(() => {
+    if (searchQuery.length > 0) {
+      navigate("/Products");
+    }
+  }, [searchQuery]);
 
   return (
     <div>
@@ -21,11 +35,13 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden sm:flex items-center gap-8">
           <NavLink to="/">Home</NavLink>
-          <NavLink to="/Product">All Products</NavLink>
+          <NavLink to="/Products">All Products</NavLink>
           <NavLink to="/Contact">Contact</NavLink>
 
           <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
             <input
+              name="search_bar"
+              onChange={(e)=> setSearchQuery(e.target.value)}
               className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
               type="text"
               placeholder="Search products"
@@ -146,7 +162,7 @@ const Navbar = () => {
             <NavLink to="/" onClick={() => setOpen(false)}>
               Home
             </NavLink>
-            <NavLink to="/Product" onClick={() => setOpen(false)}>
+            <NavLink to="/Products" onClick={() => setOpen(false)}>
               All Products
             </NavLink>
             {user && (

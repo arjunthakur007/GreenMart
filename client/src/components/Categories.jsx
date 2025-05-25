@@ -12,9 +12,9 @@ const Categories = () => {
           <div
             key={index}
             className="group cursor-pointer py-5 px-3 gap-2 rounded-lg flex flex-col justify-center items-center"
-            style={{backgroundColor: category.bg_color}}
+            style={{backgroundColor: category.bgColor}}
             onClick={()=> {
-                navigate(`/products/${category.path}`);
+                navigate(`/Products/${category.path}`);
                 scrollTo(0,0)
             }}
           >
