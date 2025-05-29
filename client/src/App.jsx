@@ -29,7 +29,7 @@ const App = () => {
           <Route path="/Products" element={<AllProducts />} />
           <Route path="/Products/:category" element={<ProductCategory />} />
           <Route path="/Products/:category/:id" element={<ProductDetails />} />
-          <Route path="/Cart" element={<Cart />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </div>
       {!isSellerPath && <Footer />}
