@@ -8,7 +8,7 @@ const ProductDetails = () => {
   const { products, navigate, currency, addToCart } = useAppContext();
   const { id } = useParams();
 
-  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [relatedproducts, setRelatedproducts] = useState([]);
   const [thumbnail, setThumbnail] = useState(null);
 
   const product = products.find((item) => item._id === id);
@@ -19,7 +19,7 @@ const ProductDetails = () => {
       productsCopy = productsCopy.filter(
         (item) => product.category === item.category
       );
-      setRelatedProducts(productsCopy.slice(0, 5));
+      setRelatedproducts(productsCopy.slice(0, 5));
     }
   }, [products]);
 
@@ -31,7 +31,7 @@ const ProductDetails = () => {
     product && (
       <div className="mt-12">
         <p>
-          <Link to={"/"}>Home</Link> /<Link to={"/Products"}> Products</Link> /
+          <Link to={"/"}>Home</Link> /<Link to={"/products"}> products</Link> /
           <Link to={`/products/${product.category.toLowerCase()}`}>
             {" "}
             {product.category}
@@ -113,14 +113,14 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
-        {/**-------------------Related Products-------------------- */}
+        {/**-------------------Related products-------------------- */}
         <div className="flex flex-col items-center mt-20">
           <div className="flex flex-col items-center w-max">
-            <p className="text-3xl font-medium">Related Products</p>
+            <p className="text-3xl font-medium">Related products</p>
             <div className="w-20 h-0.5 bg-green-500 rounded-full mt-2"></div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6 mt-5 w-full ">
-            {relatedProducts
+            {relatedproducts
               .filter((product) => product.inStock)
               .map((product, index) => (
                 <ProductCard key={index} product={product} />
@@ -128,7 +128,7 @@ const ProductDetails = () => {
           </div>
           <button
             onClick={() => {
-              navigate("/Products"); scrollTo(0,0)
+              navigate("/products"); scrollTo(0,0)
             }}
             className="mx-auto cursor-pointer px-12 my-16 py-2.5 border rounded text-green-500 hover:bg-green-100 transition  "
           >

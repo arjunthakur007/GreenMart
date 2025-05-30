@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import ProductCard from "../components/ProductCard";
 
-const AllProducts = () => {
+const Allproducts = () => {
   const { products, searchQuery } = useAppContext();
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredproducts, setFilteredproducts] = useState([]);
   useEffect(() => {
     if (searchQuery.length > 0) {
-      setFilteredProducts(
+      setFilteredproducts(
         products.filter((product) =>
           product.name.toLowerCase().includes(searchQuery.toLowerCase())
         )
       );
     } else {
-      setFilteredProducts(products);
+      setFilteredproducts(products);
     }
   }, [products, searchQuery]);
 
@@ -25,7 +25,7 @@ const AllProducts = () => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 lg:grid-cols-5 mt-6">
-        {filteredProducts
+        {filteredproducts
           .filter((product) => product.inStock)
           .map((product, index) => (
             <ProductCard key={index} product={product} />
@@ -35,4 +35,4 @@ const AllProducts = () => {
   );
 };
 
-export default AllProducts;
+export default Allproducts;

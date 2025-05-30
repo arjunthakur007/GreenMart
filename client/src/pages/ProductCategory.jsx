@@ -25,8 +25,8 @@ const ProductCategory = () => {
   //   to ensure the comparison is case-insensitive (e.g., 'Electronics' matches 'electronics').
   // - `searchCategory` will either be the found category object or `undefined` if not found.
 
-  // 3. Filtering Products
-  const filteredProducts = products.filter(
+  // 3. Filtering products
+  const filteredproducts = products.filter(
     (product) => product.category.toLowerCase() === category.toLowerCase()
   );
   // This is the core logic for displaying specific products.
@@ -35,7 +35,7 @@ const ProductCategory = () => {
   // - `product.category.toLowerCase() === category.toLowerCase()`: It checks if the `category` property
   //   of the current `product` (e.g., "Electronics") matches the `category` obtained from the URL
   //   (e.g., "electronics"), again, after converting both to lowercase for a case-insensitive match.
-  // - `filteredProducts` will be an array of products belonging to the matched category.
+  // - `filteredproducts` will be an array of products belonging to the matched category.
 
   // 4. Rendering the UI
   return (
@@ -52,11 +52,11 @@ const ProductCategory = () => {
         </div>
       )}
 
-      {/* 4.2. Displaying Products or "No products found" message */}
-      {filteredProducts.length > 0 ? ( // Another conditional rendering: Check if there are any products in the filtered list.
+      {/* 4.2. Displaying products or "No products found" message */}
+      {filteredproducts.length > 0 ? ( // Another conditional rendering: Check if there are any products in the filtered list.
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 lg:grid-cols-5 mt-6">
           {/* This div sets up a responsive grid layout using Tailwind CSS classes. */}
-          {filteredProducts.map(
+          {filteredproducts.map(
             (
               product // If products exist, loop through each `filteredProduct`.
             ) => (
@@ -69,7 +69,7 @@ const ProductCategory = () => {
           )}
         </div>
       ) : (
-        // If `filteredProducts` is empty (no products found in this category)
+        // If `filteredproducts` is empty (no products found in this category)
         <div className="flex items-center justify-center h-[60vh]">
           <p className="text-2xl font-medium text-green-500">
             No products found in this category

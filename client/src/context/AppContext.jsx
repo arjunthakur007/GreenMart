@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { dummyProducts } from "../assets/assets";
+import { dummyAddress, dummyproducts } from "../assets/assets";
 
 export const AppContext = createContext();
 
@@ -16,12 +16,14 @@ export const AppContextProvider = ({ children }) => {
   //ProductCard
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState({});
-  //AllProducts page
+  //Allproducts page
   const [searchQuery, setSearchQuery] = useState({});
+  //Cart
+  const [addresses, setAddresses] = useState([]);
 
   //Set products
-  const fetchProducts = async () => {
-    setProducts(dummyProducts);
+  const fetchproducts = async () => {
+    setProducts(dummyproducts);
   };
 
   //Add product to cart
@@ -79,8 +81,18 @@ export const AppContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchproducts();
   }, []);
+
+  //Set Address
+const fetchAddresses = async ()=> {
+  setAddresses(dummyAddress);
+};
+
+useEffect(() => {
+  fetchAddresses();
+}, [])
+
 
   const value = {
     navigate,
@@ -100,6 +112,7 @@ export const AppContextProvider = ({ children }) => {
     setSearchQuery,
     getCartCount,
     getCartAmount,
+    addresses
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

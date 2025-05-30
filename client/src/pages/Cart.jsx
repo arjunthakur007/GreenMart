@@ -12,6 +12,7 @@ const Cart = () => {
     updateCartItem,
     navigate,
     getCartAmount,
+    addresses
   } = useAppContext();
 
   const [cartArray, setCartArray] = useState([]);
@@ -24,23 +25,12 @@ const Cart = () => {
     let tempArray = [];
     for (const key in cartItems) {
       const product = products.find((item) => item._id === key);
-
-      // --- ADD THIS CHECK ---
-      if (product) {
-        // Only proceed if product is found
-        product.quantity = cartItems[key];
-        tempArray.push(product);
-      } else {
-        // Optional: Handle cases where a product in cartItems is not found in products
-        // For example, you might want to log a warning or remove it from cartItems
-        console.warn(`Product with ID ${key} not found in products list.`);
-        // If you want to automatically clean up the cart, you could do:
-        // removeFromCart(key);
-      }
-      // --- END OF ADDITION ---
+      product.quantity = cartItems[key];
+      tempArray.push(product);
     }
     setCartArray(tempArray);
   };
+
   const placeOrder = () => {};
 
   useEffect(() => {
@@ -53,8 +43,8 @@ const Cart = () => {
     <div className="flex flex-col md:flex-row mt-16">
       <div className="flex-1 max-w-4xl">
         <h1 className="text-3xl font-medium mb-6">
-          Shopping Cart{" "}
-          <span className="text-sm text-green-500">{getCartCount()} Items</span>
+          Shopping Cart
+          <span className="text-sm text-green-500">{getCartCount()}Items</span>
         </h1>
 
         <div className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 text-base font-medium pb-3">
@@ -74,7 +64,7 @@ const Cart = () => {
                   navigate(
                     `/products/${product.category.toLowerCase()}/${product._id}`
                   );
-                  scrollTo(0, 0);
+                  scrollTo(0, 0)
                 }}
                 className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded"
               >
@@ -167,7 +157,7 @@ const Cart = () => {
             </button>
             {showAddress && (
               <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full">
-                {address.map((address, index) => (
+                {addresses.map((address, index) => (
                   <p
                     onClick={() => {
                       setSelectedAddress(address);
@@ -180,7 +170,7 @@ const Cart = () => {
                   </p>
                 ))}
                 <p
-                  onClick={() => navigate("./add-address")}
+                  onClick={() => navigate("/add-address")}
                   className="text-green-500 text-center cursor-pointer p-2 hover:bg-green-500/10"
                 >
                   Add address

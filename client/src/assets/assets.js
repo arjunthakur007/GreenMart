@@ -126,7 +126,7 @@ export const categories = [
     bgColor: "#E1F5EC",
   },
   {
-    text: "Dairy Products",
+    text: "Dairy products",
     path: "Dairy",
     image: dairy_product_image,
     bgColor: "#FEE6CD",
@@ -200,7 +200,7 @@ export const features = [
   },
 ];
 
-export const dummyProducts = [
+export const dummyproducts = [
   // Vegetables
   {
     _id: "gd46g23h",
@@ -804,7 +804,7 @@ export const dummyOrders = [
     userId: "67b5880e4d09769c5ca61644",
     items: [
       {
-        product: dummyProducts[3],
+        product: dummyproducts[3],
         quantity: 2,
         _id: "67e2589a8f87e63366786401",
       },
@@ -822,12 +822,12 @@ export const dummyOrders = [
     userId: "67b5880e4d09769c5ca61644",
     items: [
       {
-        product: dummyProducts[0],
+        product: dummyproducts[0],
         quantity: 1,
         _id: "67e258798f87e633667863f3",
       },
       {
-        product: dummyProducts[1],
+        product: dummyproducts[1],
         quantity: 1,
         _id: "67e258798f87e633667863f4",
       },
