@@ -13,15 +13,18 @@ const ProductDetails = () => {
 
   const product = products.find((item) => item._id === id);
 
+  // Effect to set related products
   useEffect(() => {
-    if (products.length > 0) {
+    // ONLY proceed if 'product' is successfully found AND 'products' array has items
+    if (product && products.length > 0) {
+      // <-- Crucial check for 'product' here
       let productsCopy = products.slice();
       productsCopy = productsCopy.filter(
-        (item) => product.category === item.category
+        (item) => product.category === item.category && item._id !== product._id // Optional: Exclude current product
       );
       setRelatedproducts(productsCopy.slice(0, 5));
     }
-  }, [products]);
+  }, [products, product]); // <-- Add 'product' to the dependency array
 
   useEffect(() => {
     setThumbnail(product?.image[0] ? product.image[0] : null);
@@ -128,7 +131,8 @@ const ProductDetails = () => {
           </div>
           <button
             onClick={() => {
-              navigate("/products"); scrollTo(0,0)
+              navigate("/products");
+              scrollTo(0, 0);
             }}
             className="mx-auto cursor-pointer px-12 my-16 py-2.5 border rounded text-green-500 hover:bg-green-100 transition  "
           >

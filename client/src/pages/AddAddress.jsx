@@ -30,7 +30,7 @@ const AddAddress = () => {
     const { name, value } = e.target;
 
     setAddress((prevAddress) => ({
-      ...AddAddress,
+      ...prevAddress,
       [name]: value,
     }));
   };
