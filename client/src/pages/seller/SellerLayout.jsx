@@ -4,7 +4,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 
 const SellerLayout = () => {
-  const { setIsSeller } = useAppContext();
+  const { setIsSelle, navigate } = useAppContext();
 
   const sidebarLinks = [
     { name: "Add Product", path: "/seller", icon: assets.add_icon },
@@ -44,7 +44,7 @@ const SellerLayout = () => {
         <div className="md:w-64 w-16 border-r h-[550px] text-base border-gray-300 pt-4 flex flex-col transition-all duration-300">
           {sidebarLinks.map((item) => (
             <NavLink
-              href={item.path}
+              to={item.path}
               key={item.name}
               end={item.path === "/seller"}
               className={({ isActive }) => `flex items-center py-3 px-4 gap-3 
@@ -59,7 +59,7 @@ const SellerLayout = () => {
             </NavLink>
           ))}
         </div>
-        <Outlet/>
+        <Outlet />
       </div>
     </>
   );
