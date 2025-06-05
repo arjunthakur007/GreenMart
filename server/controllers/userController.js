@@ -57,7 +57,7 @@ export const login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.json({ success: false, message: "Invalid email or password" });
+      return res.json({ success: false, message: "Invalid Credentials" });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -73,5 +73,36 @@ export const login = async (req, res) => {
       success: true,
       user: { email: user.email, name: user.name },
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+//Check-auth : /api/user/is-auth
+export const isAuth = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const user = await User.findById(userId).select("-password");
+    return res.json({ success: true, user });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+//Logout user: /api/user/logot
+
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true, //This flag means the cookie cannot be accessed via client-side JavaScript.
+      secure: process.env.NODE_ENV === "production", //This flag means the cookie will only be sent over HTTPS (secure) connections.
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict", // This flag controls how cookies are sent with cross-site requests.
+    });
+    return res.json({ success: true, message: "Logged Out" });
+  } catch (error) {
+    console.log(error.message); 
+    res.json({ success: false, message: error.message });
+  }
 };
