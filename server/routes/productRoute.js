@@ -11,7 +11,7 @@ const productRouter = express.Router();
 //Method - POST
 //Params - none
 //Body   - none
-productRouter.post("/add", upload.array([images]), authSeller, addProduct);
+productRouter.post("/add", upload.array(["images"]), authSeller, addProduct);
 
 //Route  - "/api/product/"
 //Des    - getting all products
