@@ -13,7 +13,7 @@ const addressRouter = express.Router();
 addressRouter.post("/add",authUser, addAddress );
 
 //Route  - "/api/address/get"
-//Des    - add address
+//Des    - get address
 //Access - Public
 //Method - GET
 //Params - none
