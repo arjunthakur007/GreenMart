@@ -2,6 +2,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { dummyAddress, dummyproducts } from "../assets/assets";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
 export const AppContext = createContext();
 
@@ -21,7 +25,21 @@ export const AppContextProvider = ({ children }) => {
   //Cart
   const [addresses, setAddresses] = useState([]);
 
-  //Set products
+  //Fetch Seller Status
+  const fetchSeller = async () => {
+    try {
+      const { data } = await axios.get("/api/seller/is-auth");
+      if (data.success) {
+        setIsSeller(true);
+      } else {
+        setIsSeller(false);
+      }
+    } catch (error) {
+      setIsSeller(false);
+    }
+  };
+
+  //Fetch All Products
   const fetchproducts = async () => {
     setProducts(dummyproducts);
   };
@@ -60,39 +78,39 @@ export const AppContextProvider = ({ children }) => {
   };
 
   //Total Cart item count
-  const getCartCount = ()=> {
-    let totalCount= 0;
-    for(const item in cartItems ){
+  const getCartCount = () => {
+    let totalCount = 0;
+    for (const item in cartItems) {
       totalCount += cartItems[item];
     }
     return totalCount;
   };
-  
+
   //Get total cart Amount
-  const getCartAmount = ()=> {
+  const getCartAmount = () => {
     let totalAmount = 0;
-    for( const items in cartItems){
-      let itemInfo = products.find((product)=> product._id = items);
-      if(cartItems[items] > 0){
-        totalAmount += itemInfo.offerPrice * cartItems[items]
+    for (const items in cartItems) {
+      let itemInfo = products.find((product) => (product._id = items));
+      if (cartItems[items] > 0) {
+        totalAmount += itemInfo.offerPrice * cartItems[items];
       }
-    } 
+    }
     return Math.floor(totalAmount * 100) / 100;
   };
 
   useEffect(() => {
+    fetchSeller();
     fetchproducts();
   }, []);
 
   //Set Address
-const fetchAddresses = async ()=> {
-  setAddresses(dummyAddress);
-};
+  const fetchAddresses = async () => {
+    setAddresses(dummyAddress);
+  };
 
-useEffect(() => {
-  fetchAddresses();
-}, [])
-
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
 
   const value = {
     navigate,
@@ -112,7 +130,8 @@ useEffect(() => {
     setSearchQuery,
     getCartCount,
     getCartAmount,
-    addresses
+    addresses,
+    axios,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
