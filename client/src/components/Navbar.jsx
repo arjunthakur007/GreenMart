@@ -23,7 +23,7 @@ const Navbar = () => {
       if (data.success) {
         toast.success(data.message);
         setUser(null);
-        Navigate("/");
+        navigate("/");
       } else {
         toast.error(data.message);
       }
