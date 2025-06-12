@@ -40,8 +40,17 @@ export const AppContextProvider = ({ children }) => {
   };
 
   //Fetch All Products
-  const fetchproducts = async () => {
-    setProducts(dummyproducts);
+  const fetchProducts = async () => {
+    try {
+      const { data } = await axios.get("/api/product/list");
+      if (data.success) {
+        setProducts(data.products);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   //Add product to cart
@@ -100,7 +109,7 @@ export const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     fetchSeller();
-    fetchproducts();
+    fetchProducts();
   }, []);
 
   //Set Address
@@ -132,6 +141,7 @@ export const AppContextProvider = ({ children }) => {
     getCartAmount,
     addresses,
     axios,
+    fetchProducts,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
