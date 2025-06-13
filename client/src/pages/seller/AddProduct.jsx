@@ -130,7 +130,7 @@ const AddProduct = () => {
           >
             {categories.map((item, index) => (
               <option key={index} value={item.path}>
-                {item.text}
+                {item.path}
               </option>
             ))}
           </select>

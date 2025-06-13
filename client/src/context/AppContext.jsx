@@ -95,7 +95,7 @@ export const AppContextProvider = ({ children }) => {
         delete cartData[itemId];
       }
     }
-    toast.success("Items removed from cart");
+    toast.success("Removed from cart");
     setCartItems(cartData);
   };
 
@@ -112,19 +112,13 @@ export const AppContextProvider = ({ children }) => {
   const getCartAmount = () => {
     let totalAmount = 0;
     for (const items in cartItems) {
-      let itemInfo = products.find((product) => (product._id = items));
+      let itemInfo = products.find((product) => product._id === items);
       if (cartItems[items] > 0) {
         totalAmount += itemInfo.offerPrice * cartItems[items];
       }
     }
     return Math.floor(totalAmount * 100) / 100;
   };
-
-  useEffect(() => {
-    fetchUser();
-    fetchSeller();
-    fetchProducts();
-  }, []);
 
   //Set Address
   const fetchAddresses = async () => {
@@ -134,6 +128,29 @@ export const AppContextProvider = ({ children }) => {
   useEffect(() => {
     fetchAddresses();
   }, []);
+
+  useEffect(() => {
+    fetchUser();
+    fetchSeller();
+    fetchProducts();
+  }, []);
+
+  //Update Database cart items
+  useEffect(() => {
+    const updateCart = async () => {
+      try {
+        const { data } = await axios.post("/api/cart/update", { cartItems });
+        if (!data.success) {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    if (user) {
+      updateCart();
+    }
+  }, [cartItems]);
 
   const value = {
     navigate,
