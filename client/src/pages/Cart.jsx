@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
-import { assets, dummyAddress } from "../assets/assets";
+import { assets } from "../assets/assets";
 import toast from "react-hot-toast";
 
 const Cart = () => {
   const {
+    user,
     products,
     currency,
     cartItems,
@@ -13,32 +14,66 @@ const Cart = () => {
     updateCartItems,
     navigate,
     getCartAmount,
-    addresses,
+    axios,
   } = useAppContext();
 
   const [cartArray, setCartArray] = useState([]);
-  const [address, setAddress] = useState(dummyAddress);
+  const [addresses, setAddresses] = useState([]);
   const [showAddress, setShowAddress] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState(dummyAddress[0]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentOption, setPaymentOption] = useState("COD");
 
   const getCart = () => {
     let tempArray = [];
     for (const key in cartItems) {
       const product = products.find((item) => item._id === key);
-      product.quantity = cartItems[key];
-      tempArray.push(product);
+      // --- FIX STARTS HERE ---
+      if (product) {
+        // Only proceed if 'product' was found
+        product.quantity = cartItems[key];
+        tempArray.push(product);
+      } else {
+        // Optional: Log a warning if a product in cartItems isn't found in 'products'
+        console.warn(
+          `Product with ID '${key}' from cartItems not found in 'products' list. Skipping.`
+        );
+        // You might also want to inform the user or remove this invalid item from their cart
+        // if this is a persistent issue.
+      }
+      // --- FIX ENDS HERE ---
     }
     setCartArray(tempArray);
+  };
+
+  const getUserAddress = async () => {
+    try {
+      const { data } = await axios.get("/api/address/get");
+      if (data.success) {
+        setAddresses(data.addresses);
+        if (data.addresses.length > 0) {
+          setSelectedAddress(data.addresses[0]);
+        }
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const placeOrder = () => {};
 
   useEffect(() => {
-    if (products.length > 0 && cartItems) {
+    if (products && products.length > 0 && cartItems) {
       getCart();
     }
   }, [products, cartItems]);
+
+  useEffect(() => {
+    if (user) {
+      getUserAddress();
+    }
+  }, [user]);
 
   return products.length > 0 && cartItems ? (
     <div className="flex flex-col md:flex-row mt-16">
@@ -84,7 +119,7 @@ const Cart = () => {
                   <div className="flex items-center">
                     <p>Qty:</p>
                     <select
-                      onChange={e =>
+                      onChange={(e) =>
                         updateCartItems(product._id, Number(e.target.value))
                       }
                       value={cartItems[product._id]}
@@ -160,6 +195,7 @@ const Cart = () => {
               <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full">
                 {addresses.map((address, index) => (
                   <p
+                    key={index}
                     onClick={() => {
                       setSelectedAddress(address);
                       setShowAddress(false);

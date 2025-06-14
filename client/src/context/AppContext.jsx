@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { dummyAddress, dummyproducts } from "../assets/assets";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -22,8 +21,6 @@ export const AppContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
   //Allproducts page
   const [searchQuery, setSearchQuery] = useState({});
-  //Cart
-  const [addresses, setAddresses] = useState([]);
 
   //Fetch user Auth Status, User Data & Cart items
   const fetchUser = async () => {
@@ -120,15 +117,6 @@ export const AppContextProvider = ({ children }) => {
     return Math.floor(totalAmount * 100) / 100;
   };
 
-  //Set Address
-  const fetchAddresses = async () => {
-    setAddresses(dummyAddress);
-  };
-
-  useEffect(() => {
-    fetchAddresses();
-  }, []);
-
   useEffect(() => {
     fetchUser();
     fetchSeller();
@@ -170,7 +158,6 @@ export const AppContextProvider = ({ children }) => {
     setSearchQuery,
     getCartCount,
     getCartAmount,
-    addresses,
     axios,
     fetchProducts,
   };

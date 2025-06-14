@@ -10,7 +10,7 @@ const addressRouter = express.Router();
 //Method - POST
 //Params - none
 //Body   - none
-addressRouter.post("/add",authUser, addAddress );
+addressRouter.post("/add", authUser, addAddress);
 
 //Route  - "/api/address/get"
 //Des    - get address
@@ -18,6 +18,6 @@ addressRouter.post("/add",authUser, addAddress );
 //Method - GET
 //Params - none
 //Body   - none
-addressRouter.get("/get",authUser,getAddress );
+addressRouter.get("/get", authUser, getAddress);
 
 export default addressRouter;
